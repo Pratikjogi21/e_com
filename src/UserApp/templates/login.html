@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .form-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .login-option {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .login-option p {
+            margin: 0;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .login-option a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .login-option a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-section">
+        <h1>Login</h1>
+        <form  method="post">
+            {% csrf_token %}
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" name="email" required>
+
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" name="password" required>
+
+            <input type="submit">
+           
+
+            <div class="login-option">
+                <p> <a href="{% url 'registration'%}">Create New Account</a></p>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
