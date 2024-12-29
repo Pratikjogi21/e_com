@@ -5,7 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product List</title>
     <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+        }
+        body{
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center
+            
+        }
         .product-container {
+            border: 1px solid red;
+            width: 100%;
+            min-height: auto;
+            padding: 20px;
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
@@ -13,7 +32,7 @@
         .product {
             border: 1px solid #ddd;
             padding: 20px;
-            width: 250px;
+            width: 240px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
@@ -37,6 +56,8 @@
         <div class="product-container">
             {% for product in products %}
                 <div class="product">
+                <h3>{{ product.product_id }}</h3>
+
                     {% if product.product_image %}
                         <img src="{{ product.product_image.url }}" alt="{{ product.product_name }}">
                     {% else %}
@@ -44,12 +65,12 @@
                     {% endif %}
                     <h3>{{ product.product_name }}</h3>
                     <p><strong>Price:</strong> ₹{{ product.product_price }}</p> 
+                    <h3>{{ product.stock }}</h3>
 
-                    <button><a href="add-to-cart/{{product.product_id}}">Add To Card</a></button>
-
-                    <button><a href="">Buy</a></button>
+                    <button type="button"><a href="delete_product/{{product.product_id}}">Delete</a></button>
 
                 </div>
+
             {% endfor %}
         </div>
     </form>
