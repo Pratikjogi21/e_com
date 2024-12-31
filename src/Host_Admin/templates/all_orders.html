@@ -72,7 +72,6 @@
                     <td class="status {{ o.status|lower }}">{{ o.status }}</td>
                     <td>{{ o.created_at }}</td>
                     <td>
-                        <!-- Form to update status -->
                         <form action="{% url 'update_order_status' o.id %}" method="POST">
                             {% csrf_token %}
                             <select name="status">

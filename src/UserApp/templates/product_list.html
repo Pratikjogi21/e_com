@@ -143,20 +143,17 @@
     let currentQuantity = parseInt(quantityInput.value);
 
     if (action === 'increment') {
-        // Increment quantity, but not exceeding stock
         if (currentQuantity < parseInt(quantityInput.max)) {
             currentQuantity++;
         }
     } else if (action === 'decrement') {
-        // Decrement quantity, but not less than 1
         if (currentQuantity > 1) {
             currentQuantity--;
         }
     }
 
-    // Update the quantity in the input field and hidden input field
-    quantityInput.value = currentQuantity;  // Update the visible input
-    hiddenQuantity.value = currentQuantity;  // Update the hidden input value
+    quantityInput.value = currentQuantity;  
+    hiddenQuantity.value = currentQuantity;  
 }
 
     </script>

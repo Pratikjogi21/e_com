@@ -3,7 +3,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import *
 from Host_Admin.models import *
-# from Host
 from UserApp.views import *
 
 USERNAME = "admin"

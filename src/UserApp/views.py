@@ -73,25 +73,21 @@ def product_list(request):
 @login_required
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
-    quantity = int(request.POST.get('quantity', 1))  # Get the quantity from the hidden input
+    quantity = int(request.POST.get('quantity', 1))  
 
-    # Check if requested quantity is available in stock
     if quantity > product.stock:
         messages.error(request, f"Only {product.stock} units of {product.product_name} are available.")
         return redirect('/product_list')
 
-    # Reduce stock after adding to the cart
     product.stock -= quantity
-    product.save()  # Save the updated stock in the database
+    product.save() 
 
-    # Add or update the cart item
     cart_item, created = AddToCard.objects.get_or_create(user=request.user, product=product)
 
-    # If the product already exists in the cart, update the quantity
     if not created:
         cart_item.quantity += quantity
     else:
-        cart_item.quantity = quantity  # Set the quantity when adding for the first time
+        cart_item.quantity = quantity 
 
     cart_item.save()
 
@@ -119,21 +115,17 @@ def cart_detail(request):
 
 @login_required
 def create_order(request, product_id):
-    # Get the product details using the product ID
     product = get_object_or_404(Product, id=product_id)
 
-    # If the method is POST, the user is confirming the order
     if request.method == 'POST':
-        quantity = int(request.POST.get('quantity', 1))  # Get the quantity from the form
-        total_price = product.product_price * quantity  # Calculate the total price
+        quantity = int(request.POST.get('quantity', 1))  
+        total_price = product.product_price * quantity 
         order = Order.objects.create(
             user=request.user,
             product=product,
             quantity=quantity,
             total_price=total_price
         )
-        # You can redirect the user to a confirmation page or payment gateway
         return render(request, 'order_confirmation.html', {'order': order})
 
-    # Render the order page with product details for review
     return render(request, 'order_page.html', {'product': product})
