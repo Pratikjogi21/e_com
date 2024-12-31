@@ -4,12 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product List</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=shopping_cart" />
     <style>
+        .material-symbols-outlined {
+            position: relative;
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
         .product-container {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
         }
+
         .product {
             border: 1px solid #ddd;
             padding: 20px;
@@ -17,41 +24,141 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
+
         .product h3 {
             margin-top: 0;
         }
+
         .product p {
             margin: 5px 0;
         }
+
         .product img {
             max-width: 100%;
             height: 150px;
             border-radius: 8px;
         }
+
+        .material-symbols-outlined > article {
+            width: 20px;
+            height: 20px;
+            background-color: black;
+            color: white;
+            position: absolute;
+            top: -15px;
+            left: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2px;
+            border-radius: 50%;
+        }
+
+        .quantity-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .quantity-controls button {
+            font-size: 18px;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            background-color: #f0f0f0;
+            cursor: pointer;
+        }
+
+        .quantity-controls input {
+            width: 50px;
+            text-align: center;
+            margin: 0 10px;
+            padding: 5px;
+        }
+
+        .btn {
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
     <h1>Product List</h1>
+
+    <a href="cart">
+        <span class="material-symbols-outlined">
+            shopping_cart
+            <article><h5>{{ q }}</h5></article>
+        </span>
+    </a>
+
     <form action="" method="POST">
         {% csrf_token %}
+        
+        <p></p>
+
         <div class="product-container">
             {% for product in products %}
-                <div class="product">
-                    {% if product.product_image %}
-                        <img src="{{ product.product_image.url }}" alt="{{ product.product_name }}">
-                    {% else %}
-                        <p>No image available</p>
-                    {% endif %}
-                    <h3>{{ product.product_name }}</h3>
-                    <p><strong>Price:</strong> ₹{{ product.product_price }}</p> 
-
-                    <button><a href="add-to-cart/{{product.product_id}}">Add To Card</a></button>
-
-                    <button><a href="">Buy</a></button>
-
+            <div class="product">
+                {% if product.product_image %}
+                    <img src="{{ product.product_image.url }}" alt="{{ product.product_name }}">
+                {% else %}
+                    <p>No image available</p>
+                {% endif %}
+                <h3>{{ product.product_name }}</h3>
+                <p><strong>Price:</strong> ₹{{ product.product_price }}</p>
+        
+                <div class="quantity-controls">
+                    <button type="button" id="decrement_{{ product.id }}" onclick="updateQuantity({{ product.id }}, 'decrement')">-</button>
+                    <input type="number" id="quantity_{{ product.id }}" value="1" min="1" max="{{ product.stock }}">
+                    <button type="button" id="increment_{{ product.id }}" onclick="updateQuantity({{ product.id }}, 'increment')">+</button>
                 </div>
-            {% endfor %}
+        
+                <form action="add-to-cart/{{ product.id }}" method="POST" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="quantity" id="hidden_quantity_{{ product.id }}" value="1" />
+                    <button type="submit" class="btn">Add to Cart</button>
+                </form>
+        
+                <a href="{% url 'create_order' product.id %}" class="btn">Pay</a>
+            </div>
+        {% endfor %}
+        
         </div>
     </form>
+
+    <script>
+        function updateQuantity(productId, action) {
+    const quantityInput = document.getElementById(`quantity_${productId}`);
+    const hiddenQuantity = document.getElementById(`hidden_quantity_${productId}`);
+    let currentQuantity = parseInt(quantityInput.value);
+
+    if (action === 'increment') {
+        // Increment quantity, but not exceeding stock
+        if (currentQuantity < parseInt(quantityInput.max)) {
+            currentQuantity++;
+        }
+    } else if (action === 'decrement') {
+        // Decrement quantity, but not less than 1
+        if (currentQuantity > 1) {
+            currentQuantity--;
+        }
+    }
+
+    // Update the quantity in the input field and hidden input field
+    quantityInput.value = currentQuantity;  // Update the visible input
+    hiddenQuantity.value = currentQuantity;  // Update the hidden input value
+}
+
+    </script>
 </body>
 </html>

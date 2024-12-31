@@ -6,9 +6,9 @@ from .models import Profile
 from Host_Admin.models import Product
 from UserApp.models import AddToCard
 from django.contrib import messages
+from Host_Admin.models import Order
 
-
-
+ 
 def registerView(request):
     if(request.user.is_authenticated):
         return redirect("/homeuser")
@@ -60,30 +60,80 @@ def logoutView(request):
 
 def product_list(request):
     products = Product.objects.all() 
-    return render(request, 'product_list.html', {'products': products})
+    data = AddToCard.objects.all()
+    q=0
+
+    for item in data:
+        q += item.quantity
+        print(q)
+    
+    return render(request, 'product_list.html', {'products': products,'q': q})
 
 #--------------------------------
+@login_required
 def add_to_cart(request, product_id):
-    product = get_object_or_404(Product, product_id=product_id)
-    cart_item, _ = AddToCard.objects.get_or_create(user=request.user, product=product, defaults={'quantity': 0})
-    # if not cart_item.pk:  
-    cart_item.quantity += 1
+    product = get_object_or_404(Product, id=product_id)
+    quantity = int(request.POST.get('quantity', 1))  # Get the quantity from the hidden input
+
+    # Check if requested quantity is available in stock
+    if quantity > product.stock:
+        messages.error(request, f"Only {product.stock} units of {product.product_name} are available.")
+        return redirect('/product_list')
+
+    # Reduce stock after adding to the cart
+    product.stock -= quantity
+    product.save()  # Save the updated stock in the database
+
+    # Add or update the cart item
+    cart_item, created = AddToCard.objects.get_or_create(user=request.user, product=product)
+
+    # If the product already exists in the cart, update the quantity
+    if not created:
+        cart_item.quantity += quantity
+    else:
+        cart_item.quantity = quantity  # Set the quantity when adding for the first time
+
     cart_item.save()
-    messages.success(request, f"{product.product_name} has been added to your cart!")
+
+    messages.success(request, f"{product.product_name} added to your cart.")
     return redirect('/cart')
+
+
 
 
 @login_required
 def cart_detail(request):
     cart_items = AddToCard.objects.filter(user=request.user)
+    print(cart_items)
     total = sum(item.total_price() for item in cart_items)
+    
     return render(request, 'card_detail.html', {'cart_items': cart_items, 'total': total})
 
 
-@login_required
-def remove_from_cart(request, cart_item_id):
-    cart_item = get_object_or_404(AddToCard, id=cart_item_id, user=request.user)
-    cart_item.delete()
-    messages.success(request, "Item removed from cart!")
-    return redirect('/cart')
+# @login_required
+# def remove_from_cart(request, cart_item_id):
+#     cart_item = get_object_or_404(AddToCard, id=cart_item_id, user=request.user)
+#     cart_item.delete()
+#     messages.success(request, "Item removed from cart!")
+#     return redirect('/cart')
 
+@login_required
+def create_order(request, product_id):
+    # Get the product details using the product ID
+    product = get_object_or_404(Product, id=product_id)
+
+    # If the method is POST, the user is confirming the order
+    if request.method == 'POST':
+        quantity = int(request.POST.get('quantity', 1))  # Get the quantity from the form
+        total_price = product.product_price * quantity  # Calculate the total price
+        order = Order.objects.create(
+            user=request.user,
+            product=product,
+            quantity=quantity,
+            total_price=total_price
+        )
+        # You can redirect the user to a confirmation page or payment gateway
+        return render(request, 'order_confirmation.html', {'order': order})
+
+    # Render the order page with product details for review
+    return render(request, 'order_page.html', {'product': product})

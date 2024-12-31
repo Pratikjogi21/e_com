@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Product,Order
+from .models import *
+from Host_Admin.models import *
+# from Host
+from UserApp.views import *
 
 USERNAME = "admin"
 PASSWORD = "password123"
@@ -70,29 +73,52 @@ def delete_product(request,product_id):
     return redirect('/admin_product_list')
 #---------------------------------
 
+def update_product(request,product_id):
+    pd = Product.objects.get(id=product_id)
+    if(request.method=="POST"):
+        product_id = request.POST.get('product_id')
+        product_name = request.POST.get('product_name')
+        product_image = request.FILES.get('product_image')
+        product_price = request.POST.get('product_price')
+        stock = request.POST.get('stock')
 
-@login_required
-def buy_now(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    quantity = 1  # Default quantity for "Buy Now"
+        pd.product_name = product_name
+        if product_image:  
+            pd.product_image = product_image
+        pd.product_price = product_price
+        pd.stock = stock
+        pd.save()
+        return redirect("/admin_product_list")
+    else:
+        return render(request,"edit_product.html",{'m':pd})
+
+ 
+
+
+
+
+
+def order_detail(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    profile = Profile.objects.get(user=request.user)
+    print(profile)
+
+    return render(request, 'order_detail.html', {'order': order,'profile': profile})
+
+
+    #-----------------------
+
+def vieworders(request):
+    order = Order.objects.all()
+    return render(request, 'all_orders.html', {'order': order})
+
     
-    # Ensure the product has enough stock
-    if product.stock < quantity:
-        messages.error(request, f"Sorry, {product.product_name} is out of stock!")
-        return redirect('product_list')  # Redirect to the product listing
-
-    # Create an order
-    total_price = quantity * product.product_price
-    order = Order.objects.create(
-        user=request.user,
-        product=product,
-        quantity=quantity,
-        total_price=total_price
-    )
-
-    # Reduce stock
-    product.stock -= quantity
-    product.save()
-
-    messages.success(request, f"You have successfully purchased {product.product_name}!")
-    return redirect('order_detail', order_id=order.id)
+def update_order_status(request, order_id):
+    if request.method == "POST":
+        order = get_object_or_404(Order, id=order_id)
+        new_status = request.POST.get('status')
+        if new_status:
+            order.status = new_status
+            order.save()
+            messages.success(request, f"Order #{order.id} status updated to {new_status}")
+        return redirect('/view_orders')

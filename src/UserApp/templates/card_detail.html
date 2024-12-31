@@ -11,6 +11,7 @@
     </thead>
     <tbody>
         {% for item in cart_items %}
+        {{item}}
         <tr>
             <td>{{ item.product.product_name }}</td>
             <td>{{ item.quantity }}</td>
@@ -22,4 +23,4 @@
     </tbody>
 </table>
 <p>Total: ₹{{ total }}</p>
-<button><a href="">BUY</a></button>
+<button><a href="#">BUY</a></button>
