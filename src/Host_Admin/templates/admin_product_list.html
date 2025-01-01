@@ -65,7 +65,7 @@
                     {% endif %}
                     <h3>{{ product.product_name }}</h3>
                     <p><strong>Price:</strong> ₹{{ product.product_price }}</p> 
-                    <h3>{{ product.stock }}</h3>
+                    <h3><strong style="color: green;">Available Stock </strong>:{{ product.stock }}</h3>
 
                     <button type="button"><a href="delete_product/{{product.product_id}}">Delete</a></button>
                     <button type="button"><a href="update_product/{{product.product_id}}">Update</a></button>

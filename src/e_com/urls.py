@@ -22,12 +22,12 @@ urlpatterns = [
     path('update_product/<int:product_id>',update_product),
     path('view_orders',vieworders),
     path('update-order-status/<int:order_id>/', update_order_status, name='update_order_status'),
-     path('order/<int:product_id>/',create_order, name='create_order'),
-    
+    path('order/<int:product_id>/',create_order, name='create_order'),
     path('add-to-cart/<int:product_id>',add_to_cart),
-    # path('remove-to-cart/<int:product_id>',remove_from_cart),
+    path('cart/remove/<int:cart_item_id>/',remove_from_cart, name='remove_from_cart'),
     path('cart',cart_detail),
     path('order/<int:order_id>/',order_detail, name='order_detail'),
+    path('cart/purchase', purchase_cart, name='purchase')
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -4,16 +4,20 @@ from django.contrib import messages
 from .models import *
 from Host_Admin.models import *
 from UserApp.views import *
+from django.contrib.auth.hashers import make_password,check_password
+from decouple import config
 
-USERNAME = "admin"
-PASSWORD = "password123"
+
+ADMIN_USERNAME = config('ADMIN_USERNAME')
+ADMIN_HASHED_PASSWORD = config('ADMIN_HASHED_PASSWORD')
 
 def admin_login(request):
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        if username == USERNAME and password == PASSWORD:
+
+        if username == ADMIN_USERNAME and check_password(password, ADMIN_HASHED_PASSWORD):
             request.session['is_logged_in'] = True
             request.session['username'] = username
             return redirect('/home') 
@@ -37,7 +41,7 @@ def add_product(request):
     if request.method == "POST":
         product_id = request.POST.get('product_id')
         product_name = request.POST.get('product_name')
-        product_image = request.FILES.get('product_image')
+        product_image = request.FILES.get('media')
         product_price = request.POST.get('product_price')
         stock = request.POST.get('stock')
 
@@ -77,7 +81,7 @@ def update_product(request,product_id):
     if(request.method=="POST"):
         product_id = request.POST.get('product_id')
         product_name = request.POST.get('product_name')
-        product_image = request.FILES.get('product_image')
+        product_image = request.FILES.get('media')
         product_price = request.POST.get('product_price')
         stock = request.POST.get('stock')
 
@@ -90,12 +94,6 @@ def update_product(request,product_id):
         return redirect("/admin_product_list")
     else:
         return render(request,"edit_product.html",{'m':pd})
-
- 
-
-
-
-
 
 def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id)
