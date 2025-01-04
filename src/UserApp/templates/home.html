@@ -3,12 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>HOME</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7fc;
+        }
+
+        .navbar {
+            background-color: #2874f0; 
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar .left {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .navbar .right {
+            font-size: 1.1rem;
+            font-weight: normal;
+        }
+
+        .main-content {
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .welcome-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 50px;
+        }
+
+        h3 a, h4 a {
+            color: #2874f0;
+            font-size: 1.2rem;
+            text-decoration: none;
+            margin: 15px 0;
+            display: block;
+        }
+
+        h3 a:hover, h4 a:hover {
+            color: #1d63c3;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #ff6f61;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            margin: 10px 0;
+            width: 200px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #e05c4f; 
+        }
+
+        @media screen and (max-width: 768px) {
+            .navbar {
+                padding: 10px 15px;
+                flex-direction: column;
+            }
+
+            .navbar .left, .navbar .right {
+                font-size: 1.3rem;
+            }
+
+            .welcome-text {
+                font-size: 1.3rem;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 12px 20px;
+            }
+
+            h3 a, h4 a {
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    Welcome {{m.first_name}} {{m.last_name}}
+    <div class="navbar">
+        <div class="left">P</div> 
+        <div class="right"><a href="/logout" class="btn">Logout</a></div> 
+    </div>
 
-    <h3><a href="/logout">Logout</a></h3>
-    <h4><a href="/product_list">View_Product</a></h4>
+    <div class="main-content">
+        <p class="welcome-text">Welcome {{m.first_name}} {{m.last_name}}</p>
+
+        <div class="links-container">
+            <h4><a href="/profile" class="btn">Profile</a></h4>
+            <h4><a href="/product_list" class="btn">View Product</a></h4>
+            <h4><a href="cart" class="btn">Cart</a></h4>
+
+        </div>
+    </div>
 </body>
 </html>

@@ -1,4 +1,3 @@
-
 from django.contrib import admin
 from django.urls import path
 from Host_Admin.views import *
@@ -27,7 +26,7 @@ urlpatterns = [
     path('cart/remove/<int:cart_item_id>/',remove_from_cart, name='remove_from_cart'),
     path('cart',cart_detail),
     path('order/<int:order_id>/',order_detail, name='order_detail'),
-    path('cart/purchase', purchase_cart, name='purchase')
+    path('profile',userProfile)
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

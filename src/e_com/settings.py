@@ -135,8 +135,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-from decouple import config
-
-ADMIN_USERNAME = config('ADMIN_USERNAME')
-ADMIN_HASHED_PASSWORD = config('ADMIN_HASHED_PASSWORD')
+# APPEND_SLASH = False
+# APPEND_SLASH = True
 

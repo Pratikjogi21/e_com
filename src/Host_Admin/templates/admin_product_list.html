@@ -5,47 +5,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product List</title>
     <style>
-        *{
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
 
-        }
-        body{
-            width: 100%;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center
-            
-        }
-        .product-container {
-            border: 1px solid red;
-            width: 100%;
-            min-height: auto;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
             padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+
+        .product-container {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
+            justify-content: center;
         }
+
         .product {
             border: 1px solid #ddd;
+            border-radius: 8px;
             padding: 20px;
-            width: 240px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 250px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
             text-align: center;
+            transition: transform 0.3s;
         }
+
+        .product:hover {
+            transform: scale(1.05);
+        }
+
         .product h3 {
-            margin-top: 0;
+            margin-bottom: 10px;
+            color: #555;
         }
+
         .product p {
             margin: 5px 0;
+            color: #777;
         }
+
         .product img {
             max-width: 100%;
             height: 150px;
             border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .product button {
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        .product button a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .product button:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 768px) {
+            .product {
+                width: 100%;
+                max-width: 300px;
+            }
         }
     </style>
 </head>
@@ -56,23 +99,21 @@
         <div class="product-container">
             {% for product in products %}
                 <div class="product">
-                <h3>{{ product.product_id }}</h3>
+                    <h3>Product ID: {{ product.product_id }}</h3>
 
                     {% if product.product_image %}
                         <img src="{{ product.product_image.url }}" alt="{{ product.product_name }}">
                     {% else %}
                         <p>No image available</p>
                     {% endif %}
+
                     <h3>{{ product.product_name }}</h3>
-                    <p><strong>Price:</strong> ₹{{ product.product_price }}</p> 
-                    <h3><strong style="color: green;">Available Stock </strong>:{{ product.stock }}</h3>
+                    <p><strong>Price:</strong> ₹{{ product.product_price }}</p>
+                    <h3><strong style="color: green;">Available Stock:</strong> {{ product.stock }}</h3>
 
                     <button type="button"><a href="delete_product/{{product.product_id}}">Delete</a></button>
                     <button type="button"><a href="update_product/{{product.product_id}}">Update</a></button>
-
-
                 </div>
-
             {% endfor %}
         </div>
     </form>

@@ -1,9 +1,81 @@
-<h1>Order Confirmation</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1e272e;
+            color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
 
-<p>Thank you for your order! Your order details are below:</p>
+        .confirmation-container {
+            background-color: #222f3e;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
 
-<p><strong>Product:</strong> {{ order.product.product_name }}</p>
-<p><strong>Price:</strong> ₹{{ order.total_price }}</p>
-<p><strong>Quantity:</strong> {{ order.quantity }}</p>
+        h1 {
+            color: #ff6b81;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
 
-<p>Your order has been placed successfully!</p>
+        p {
+            font-size: 16px;
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        p strong {
+            color: #1dd1a1;
+        }
+
+        .thank-you {
+            margin-top: 20px;
+            color: #c8d6e5;
+            font-size: 18px;
+        }
+
+        @media (max-width: 600px) {
+            .confirmation-container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            p {
+                font-size: 14px;
+            }
+
+            .thank-you {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="confirmation-container">
+        <h1>Order Confirmation</h1>
+        <p>Thank you for your order! Your order details are below:</p>
+        <p><strong>Product:</strong> {{ order.product.product_name }}</p>
+        <p><strong>Price:</strong> ₹{{ order.total_price }}</p>
+        <p><strong>Quantity:</strong> {{ order.quantity }}</p>
+        <p class="thank-you">Your order has been placed successfully!</p>
+    </div>
+</body>
+</html>

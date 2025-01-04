@@ -1,35 +1,126 @@
-<h2>Your Cart</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Total</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in cart_items %}
-        <tr>
-            <td>{{ item.product.product_name }}</td>
-            <td>{{ item.quantity }}</td>
-            <td>₹{{ item.product.product_price }}</td>
-            <td>₹{{ item.total_price }}</td>
-            <td>
-                <!-- Remove button -->
-                <form action="{% url 'remove_from_cart' item.id %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit">Remove</button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-<p>Total: ₹{{ total }}</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
 
-<form action="{% url 'purchase' %}" method="post">
-    {% csrf_token %}
-    <button type="submit">BUY</button>
-</form>
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+            color: #007bff;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background: #fff;
+        }
+
+        thead {
+            background-color: #007bff;
+            color: white;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #eaf1f8;
+        }
+
+        th {
+            font-size: 18px;
+        }
+
+        td {
+            font-size: 16px;
+        }
+
+        p {
+            text-align: right;
+            width: 80%;
+            margin: 20px auto;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #c82333;
+        }
+
+        .remove-button {
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                width: 95%;
+                font-size: 14px;
+            }
+
+            p {
+                width: 95%;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>Your Cart</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+            <tr>
+                <td>{{ item.product.product_name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>₹{{ item.product.product_price }}</td>
+                <td>₹{{ item.total_price }}</td>
+                <td>
+                    <form action="{% url 'remove_from_cart' item.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="remove-button">Remove</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p>Total: ₹{{ total }}</p>
+</body>
+</html>
