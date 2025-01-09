@@ -14,8 +14,6 @@ def add_to_cart(request, product_id):
         messages.error(request, f"Only {product.stock} units of {product.product_name} are available.")
         return redirect('/product_list')
 
-    # product.stock -= quantity
-    # product.save() 
 
     cart_item, created = AddToCard.objects.get_or_create(user=request.user, product=product)
 

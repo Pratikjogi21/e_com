@@ -26,7 +26,10 @@ urlpatterns = [
     path('cart/remove/<int:cart_item_id>/',remove_from_cart, name='remove_from_cart'),
     path('cart',cart_detail),
     path('order/<int:order_id>/',order_detail, name='order_detail'),
-    path('profile',userProfile)
+    path('profile',userProfile),
+    # ----------------------------------------
+    path('cart_review/<int:user_id>',Cart_review,name='cart_review'),
+    path('confirm-order-cart/', confirm_order_cart, name='confirm_order_cart'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from Host_Admin.models import *
 from UserApp.views import *
+from UserApp.models import *
 
 def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id)

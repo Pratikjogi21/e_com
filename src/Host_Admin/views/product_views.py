@@ -13,8 +13,6 @@ def add_product(request):
         product_price = request.POST.get('product_price')
         stock = request.POST.get('stock')
         
-
-
         if product_id and product_name and product_image and product_price and stock:
             product = Product(
                 product_id=product_id,
@@ -45,21 +43,29 @@ def delete_product(request,product_id):
     return redirect('/admin_product_list')
 #---------------------------------
 
-def update_product(request,product_id):
-    pd = Product.objects.get(product_id=product_id)
-    if(request.method=="POST"):
-        product_id = request.POST.get('product_id')
+def update_product(request, product_id):
+    try:
+        pd = Product.objects.get(id=product_id)
+    except Product.DoesNotExist:
+        return redirect("/product_not_found") 
+    
+    if request.method == "POST":
         product_name = request.POST.get('product_name')
-        product_image = request.FILES.get('media')
+        product_image = request.FILES.get('product_image')
         product_price = request.POST.get('product_price')
         stock = request.POST.get('stock')
-
-        pd.product_name = product_name
-        if product_name:  
+        
+        if product_name: 
             pd.product_name = product_name
-        pd.product_price = product_price
-        pd.stock = stock
+        if product_image: 
+            pd.product_image = product_image
+        if product_price:
+            pd.product_price = product_price
+        if stock is not None: 
+            pd.stock = stock
+        
         pd.save()
         return redirect("/admin_product_list")
-    else:
-        return render(request,"edit_product.html",{'m':pd})
+    
+    return render(request, "edit_product.html", {'m': pd})
+
