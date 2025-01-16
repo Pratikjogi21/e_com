@@ -9,8 +9,6 @@ class Profile(models.Model):
     state = models.CharField(max_length=100)
     postal_code = models.CharField(max_length=20)
 
-    def __str__(self):
-        return self.user.username
 
 class AddToCard(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

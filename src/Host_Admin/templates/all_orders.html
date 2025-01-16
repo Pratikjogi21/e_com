@@ -51,10 +51,9 @@
     <table>
         <thead>
             <tr>
+                <th>No</th>
                 <th>Order ID</th>
-                <th>User</th>
-                <th>Product</th>
-                <th>Quantity</th>
+                <th>E-Mail ID</th>
                 <th>Total Price</th>
                 <th>Status</th>
                 <th>Created At</th>
@@ -65,10 +64,10 @@
             {% for o in order %}
                 <tr>
                     <td>{{ o.id }}</td>
+                    <td>{{ o.order_id }}</td>
                     <td>{{ o.user.username }}</td>
-                    <td>{{ o.product.product_name }}</td>
-                    <td>{{ o.quantity }}</td>
                     <td>₹{{ o.total_price }}</td>
+
                     <td class="status {{ o.status|lower }}">{{ o.status }}</td>
                     <td>{{ o.created_at }}</td>
                     <td>

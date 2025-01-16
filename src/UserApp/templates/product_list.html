@@ -130,7 +130,7 @@
                 <button type="submit" class="btn">Add to Cart</button>
             </form>
 
-            <a href="{% url 'create_order' product.id %}" class="btn">Pay</a>
+            <a href="{% url 'create_order_user' product.id %}" class="btn">Pay</a>
         </div>
         {% endfor %}
     </div>

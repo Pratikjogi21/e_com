@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+import uuid
 class Host(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -26,18 +26,21 @@ class Product(models.Model):
     product_price = models.DecimalField(max_digits=10, decimal_places=2) 
     stock = models.PositiveIntegerField(default=0)
 
-    def __str__(self):
-        return self.product_name
 
 
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField()
-    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    order_id = models.CharField(max_length=100, unique=True,default=uuid.uuid4 ) 
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, default='Pending')
 
-    def __str__(self):
-        return f"Order #{self.id} by {self.user.username}"
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
+    product_name = models.CharField(max_length=200) 
+    product_price = models.DecimalField(max_digits=10, decimal_places=2) 
+    quantity = models.PositiveIntegerField() 
+
+ 

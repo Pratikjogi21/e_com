@@ -63,26 +63,9 @@
     <div class="confirm-container">
         <h1>Order Confirmation</h1>
         <p>Thank you for your order! Here are your order details:</p>
-        <table>
-            <thead>
-                <tr>
-                    <th>Product Name</th>
-                    <th>Quantity</th>
-                    <th>Price (₹)</th>
-                    <th>Total (₹)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in order %}
-                    <tr>
-                        <td>{{ item.product.product_name }}</td>
-                        <td>{{ item.quantity }}</td>
-                        <td>{{ item.product.product_price }}</td>
-                        <td>{{ item.total_price }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <p>Order ID: {{ order.order_id }}</p>
+        <p>Total Price: {{ order.total_price }}</p>
+        
         <p>Your order has been placed successfully!</p>
     </div>
 </body>

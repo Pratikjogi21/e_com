@@ -110,24 +110,24 @@
         <tbody>
             {% for item in cart_items %}
             <tr>
-                <td>{{ item.product.product_name }}</td>
+                <td>{{ item.product_name }}</td>
                 <td>{{ item.quantity }}</td>
-                <td>₹{{ item.product.product_price }}</td>
-                <td>₹{{ item.total_prize }}</td>
+                <td>₹{{ item.product_price }}</td>
+                <td>₹{{ item.total_item_price }}</td>
                 <td>
-                    <form action="{% url 'remove_from_cart' item.id %}" method="post">
+                    <form method="post" action="{% url 'remove_from_cart' item.product_id %}">
                         {% csrf_token %}
-                        <button type="submit" class="remove-button">Remove</button>
+                        <button type="submit" class="btn btn-danger">Remove</button>
                     </form>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    <p>Total: ₹{{ total }}</p>
+    <p>Total: ₹{{ total_price }}</p>
     <form action="{% url 'cart_review' request.user.id %}" method="post">
         {% csrf_token %}
-        <button type="submit" class="remove-button">Process To Order</button>
+        <button type="submit" class="remove-button">Proceed to Order</button>
     </form>
 </body>
 </html>

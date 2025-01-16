@@ -89,9 +89,9 @@
                 <tbody>
                     {% for item in items %}
                         <tr>
-                            <td>{{ item.product.product_name }}</td>
+                            <td>{{ item.product_name }}</td>
                             <td>{{ item.quantity }}</td>
-                            <td>{{ item.product.product_price }}</td>
+                            <td>{{ item.product_price }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -101,7 +101,7 @@
         {% endif %}
         <h3>Total Amount  : ₹{{total}}</h3>
 
-        <form action="{% url 'confirm_order_cart' %}" method="post"> 
+        <form action="{% url 'create_order' %}" method="post"> 
             {% csrf_token %} 
             <button type="submit">Confirm Order</button> 
         </form>
